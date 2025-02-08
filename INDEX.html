@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Nutrición - NutriEnLínea</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+        }
+        header {
+            background-color: #FF5722;
+            color: white;
+            padding: 1em 0;
+            text-align: center;
+            position: relative;
+        }
+        header img {
+            position: absolute;
+            left: 20px;
+            top: 10px;
+            height: 50px;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            background-color: #FFAB91;
+            cursor: pointer;
+        }
+        .tab {
+            padding: 10px 20px;
+            color: white;
+            text-align: center;
+            flex: 1;
+        }
+        .tab:hover {
+            background-color: #FF7043;
+        }
+        .content {
+            display: none;
+            padding: 20px;
+            background: white;
+            margin-top: 20px;
+        }
+        .content.active {
+            display: block;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            background: #FFCCBC;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .images {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .images img {
+            max-width: 45%;
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background: #FFCCBC;
+            border-radius: 5px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            background-color: #FF5722;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .buttons button:hover {
+            background-color: #FF7043;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="NutriEnLínea Logo">
+        <h1>Guía de Nutrición - NutriEnLínea</h1>
+    </header>
+    <div class="container">
+        <div class="tabs">
+            <div class="tab" onclick="showContent('intro')">Introducción</div>
+            <div class="tab" onclick="showContent('tips')">Consejos Nutricionales</div>
+            <div class="tab" onclick="showContent('images')">Imágenes</div>
+            <div class="tab" onclick="showContent('bmi')">Calculadora IMC</div>
+        </div>
+        <div id="intro" class="content active">
+            <h2>Bienvenido a tu Guía de Nutrición</h2>
+            <p>Descubre los elementos esenciales de una buena nutrición y cómo mantener una dieta equilibrada para un estilo de vida saludable.</p>
+        </div>
+        <div id="tips" class="content">
+            <h2>Consejos Nutricionales</h2>
+            <ul>
+                <li>Come una variedad de alimentos para asegurarte de obtener todos los nutrientes necesarios.</li>
+                <li>Incorpora muchas frutas y verduras en tu dieta.</li>
+                <li>Elige granos enteros en lugar de granos refinados.</li>
+                <li>Mantente hidratado bebiendo mucha agua.</li>
+                <li>Limita tu consumo de azúcar, sal y grasas saturadas.</li>
+                <li>Practica el control de porciones para evitar comer en exceso.</li>
+                <li>Incluye proteínas magras como pescado, aves, frijoles y nueces.</li>
+                <li>Planifica tus comidas y refrigerios para evitar elecciones poco saludables.</li>
+            </ul>
+        </div>
+        <div id="images" class="content">
+            <h2>Imágenes de Alimentos Saludables y Ejercicios</h2>
+            <div class="images">
+                <img src="alimentos_saludables.jpg" alt="Alimentos Saludables">
+                <img src="ejercicio.jpg" alt="Ejercicio">
+            </div>
+        </div>
+        <div id="bmi" class="content">
+            <h2>Calculadora de IMC</h2>
+            <form id="bmiForm">
+                <div class="form-group">
+                    <label for="name">Nombre:</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Edad:</label>
+                    <input type="number" id="age" required>
+                </div>
+                <div class="form-group">
+                    <label for="height">Talla (cm):</label>
+                    <input type="number" id="height" required>
+                </div>
+                <div class="form-group">
+                    <label for="weight">Peso (kg):</label>
+                    <input type="number" id="weight" required>
+                </div>
+                <div class="buttons">
+                    <button type="button" onclick="calculateBMI()">Calcular IMC</button>
+                    <button type="button" onclick="resetForm()">Borrar</button>
+                </div>
+            </form>
+            <div id="result" class="result" style="display: none;"></div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2023 NutriEnLínea. Todos los derechos reservados.</p>
+    </footer>
+    <script>
+        function showContent(id) {
+            var contents = document.querySelectorAll('.content');
+            contents.forEach(function(content) {
+                content.classList.remove('active');
+            });
+            document.getElementById(id).classList.add('active');
+        }
+
+        function calculateBMI() {
+            var name = document.getElementById('name').value;
+            var age = document.getElementById('age').value;
+            var height = document.getElementById('height').value;
+            var weight = document.getElementById('weight').value;
+
+            if (name && age && height && weight) {
+                var heightInMeters = height / 100;
+                var bmi = weight / (heightInMeters * heightInMeters);
+                var condition = '';
+
+                if (bmi < 18.5) {
+                    condition = 'Bajo peso';
+                } else if (bmi >= 18.5 && bmi < 24.9) {
+                    condition = 'Peso normal';
+                } else if (bmi >= 25 && bmi < 29.9) {
+                    condition = 'Sobrepeso';
+                } else {
+                    condition = 'Obesidad';
+                }
+
+                var resultDiv = document.getElementById('result');
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `<p>Hola ${name}, tienes ${age} años.</p>
+                                       <p>Tu IMC es ${bmi.toFixed(2)}. Condición: ${condition}.</p>`;
+            } else {
+                alert('Por favor, completa todos los campos.');
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('bmiForm').reset();
+            document.getElementById('result').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
